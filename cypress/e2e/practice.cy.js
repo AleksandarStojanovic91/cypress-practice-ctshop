@@ -5,6 +5,6 @@ describe('CTShop', () => {
     cy.acceptCookies()
     cy.clickLinkFromMenu('laptopovi-tableti','laptopovi')
     cy.checkFilter('13.6"')
-    cy.get('#products-list').find('div.ganalytics.item').should('have.length',3)
+    cy.verifyProductNum(3)
   })
 })

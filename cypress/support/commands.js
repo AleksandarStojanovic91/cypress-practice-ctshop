@@ -1,37 +1,5 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-
-// const basePage = require('pages/basePage.js').basePage;
-let menu = ".sharkskin-megamenu.megamenu-v.megamenu-am";
-let subMenu = 'a[href="/$"]#akcija~ul';
-let subMenuLink = '[href="/$"]';
-
-// const productsPage = require('pages/productsPage.js').productsPage;
-let filter = `//label[text()='$']/../input`;
-
+const basePage = require('/cypress/support/pages/basePage.js').basePage;
+const productsPage = require('/cypress/support/pages/productsPage.js').productsPage;
 
 /**
  * @memberOf cy
@@ -46,7 +14,6 @@ Cypress.Commands.add('closeAdd', () => {
  * @method acceptCookies Accept Cookies
  */
 Cypress.Commands.add('acceptCookies', () => {
-    // cy.xpath('//button[text()=\'Prihvatam\']').click()
     cy.get('button').contains('Prihvatam').click()
 })
 
@@ -57,9 +24,9 @@ Cypress.Commands.add('acceptCookies', () => {
  * @param link
  */
 Cypress.Commands.add('clickLinkFromMenu', (submenu, link) => {
-    cy.get(menu).invoke('show')
-    cy.get(subMenu.replace('$', submenu)).invoke('show')
-    cy.get(subMenuLink.replace('$', link)).click()
+    cy.get(basePage.menu).invoke('show')
+    cy.get(basePage.subMenu.replace('$', submenu)).invoke('show')
+    cy.get(basePage.subMenuLink.replace('$', link)).click()
 })
 
 /**
@@ -68,7 +35,14 @@ Cypress.Commands.add('clickLinkFromMenu', (submenu, link) => {
  * @param filterName
  */
 Cypress.Commands.add('checkFilter', (filterName) => {
-    cy.xpath(filter.replace('$',filterName)).check({force:true});
+    cy.xpath(productsPage.filter.replace('$',filterName)).check({force:true});
 })
 
-
+/**
+ * @memberOf cy
+ * @method verifyProductNum Verify Product Num
+ * @param productNum
+ */
+Cypress.Commands.add('verifyProductNum', (productNum) => {
+    cy.get(productsPage.productsList).find(productsPage.product).should('have.length',productNum)
+})
